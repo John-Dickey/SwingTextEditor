@@ -29,7 +29,7 @@ public class File
 	    	return;
 	    }
 	    needsSaveAs = false;
-	    Thread r = new Thread(new PrivateParts(this));//make it thread safe
+	    Thread r = new Thread(new ReadFileThreadSafe(this));//make it thread safe
 	    r.start();
 	    docListener = new TextDocumentListener();
 	    textArea.getDocument().addDocumentListener(docListener);
@@ -52,10 +52,10 @@ public class File
 	{
 		textArea.setText(s);
 	}
-	private class PrivateParts implements Runnable//Don't question it
+	private class ReadFileThreadSafe implements Runnable//most likely unnecessary
 	{
 		File f;
-		public PrivateParts(File f)
+		public ReadFileThreadSafe(File f)
 		{
 			this.f = f;
 		}

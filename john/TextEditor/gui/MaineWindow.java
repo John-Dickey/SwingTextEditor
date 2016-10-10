@@ -10,8 +10,6 @@ import javax.swing.*;
 
 import john.TextEditor.gui.event.MenuBarListener;
 import john.TextEditor.gui.event.TextDocumentListener;
-import john.TextEditor.net.NetworkManager;
-import john.TextEditor.net.client.Client2;
 import john.TextEditor.objects.File;
 
 import org.fife.ui.rtextarea.*;

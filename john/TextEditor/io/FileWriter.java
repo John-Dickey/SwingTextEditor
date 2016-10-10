@@ -44,15 +44,15 @@ public class FileWriter //TODO implement saving
 		try{	
 		writer = new PrintWriter(new BufferedWriter(new java.io.FileWriter(file)));
 		} catch (IOException e) { e.printStackTrace(); return false;}
-		Thread t = new Thread(new MakeAmericaThreadSafeAgain(writer, f));
+		Thread t = new Thread(new WriteFileThreadSafe(writer, f));//most likely unnecessary
 		t.start();
 		return true;
 	}
-	private static class MakeAmericaThreadSafeAgain implements Runnable
+	private static class WriteFileThreadSafe implements Runnable
 	{
 		PrintWriter pw;
 		File f;
-		public MakeAmericaThreadSafeAgain(PrintWriter w, File f)
+		public WriteFileThreadSafe(PrintWriter w, File f)
 		{
 			pw = w;
 			this.f = f;
