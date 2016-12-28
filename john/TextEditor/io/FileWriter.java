@@ -6,8 +6,6 @@ import java.io.PrintWriter;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-
 import john.TextEditor.gui.MaineWindow;
 import john.TextEditor.objects.File;
 import john.TextEditor.util.DocumentUtils;
@@ -15,6 +13,7 @@ import john.TextEditor.util.DocumentUtils;
 public class FileWriter //TODO implement saving
 {
 	//returns if successful
+	@Deprecated
 	public static boolean saveFile(File f) //TODO implement is file modified symbol, probably a * in the title
 	{//TODO might have to delete the file first
 		PrintWriter writer;
@@ -44,23 +43,33 @@ public class FileWriter //TODO implement saving
 		try{	
 		writer = new PrintWriter(new BufferedWriter(new java.io.FileWriter(file)));
 		} catch (IOException e) { e.printStackTrace(); return false;}
-		Thread t = new Thread(new WriteFileThreadSafe(writer, f));//most likely unnecessary
-		t.start();
+		//Thread t = new Thread(new WriteFileThreadSafe(writer, f));//most likely unnecessary
+		//t.start();
 		return true;
 	}
 	private static class WriteFileThreadSafe implements Runnable
 	{
+		String str;
 		PrintWriter pw;
-		File f;
-		public WriteFileThreadSafe(PrintWriter w, File f)
+		public WriteFileThreadSafe(PrintWriter p, String s)
 		{
-			pw = w;
-			this.f = f;
+			str = s;
+			pw = p;
 		}
 		public void run()
 		{
-			pw.print(f.getTextArea().getText());
+			pw.print(str);
 			pw.flush();
 		}
+	}
+	public static boolean write(String data, java.io.File dest)
+	{
+		PrintWriter writer;
+		try{	
+			writer = new PrintWriter(new BufferedWriter(new java.io.FileWriter(dest)));
+		} catch (IOException e) { e.printStackTrace(); return false;}
+		Thread t = new Thread(new WriteFileThreadSafe(writer, data));//most likely unnecessary
+		t.start();
+		return true;
 	}
 }

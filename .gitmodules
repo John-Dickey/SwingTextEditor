@@ -1,0 +1,6 @@
+[submodule "NitroNet"]
+	path = NitroNet
+	url = https://github.com/jmrapp1/NitroNet.git
+[submodule "lib/NitroNet"]
+	path = lib/NitroNet
+	url = https://github.com/jmrapp1/NitroNet.git

@@ -1,7 +1,5 @@
 package john.TextEditor.objects;
 
-import javax.swing.SwingUtilities;
-
 import john.TextEditor.gui.event.TextDocumentListener;
 import john.TextEditor.io.FileReader;
 
@@ -23,7 +21,7 @@ public class File
 		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);//TODO implement text style
 	    textArea.setCodeFoldingEnabled(true);//TODO preferences code folding
 	    scrollPane = new RTextScrollPane(textArea);
-	    if(f.getName() == "Untitled.java")//TODO implement need to save, when geetting new files
+	    if(f.getName() == "Untitled.java")//TODO implement need to save, when getting new files
 	    {
 	    	needsSaveAs = true;
 	    	return;

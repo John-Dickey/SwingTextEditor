@@ -1,17 +1,11 @@
 package john.TextEditor.util;
 
 import javax.swing.JTabbedPane;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.Segment;
-
-import org.fife.ui.rtextarea.RTextScrollPane;
-
 import john.TextEditor.gui.MaineWindow;
-import john.TextEditor.objects.File;
 
 public class DocumentUtils 
 {
+	/*
 	public static File whoseDocumentIsThis(Document d)
 	{
 		for(File f : MaineWindow.getInstance().getOpenDocuments())
@@ -32,13 +26,13 @@ public class DocumentUtils
 	}
 	public static File whoseScrollPaneIsThis(RTextScrollPane p)
 	{
-		for(File f : MaineWindow.getInstance().getOpenDocuments())
+		for(File f : MaineWindow.getInstance().getFileManager())
 		{
 			if(f.getScrollPane() == p)
 				return f;
 		}
 		return null;
-	}
+	}*/
 	public static void setCurrentTabName(String n)
 	{
 		JTabbedPane tPain = MaineWindow.getInstance().getTabbedPane();
@@ -48,7 +42,7 @@ public class DocumentUtils
 	{
 		JTabbedPane tPain = MaineWindow.getInstance().getTabbedPane();
 		return tPain.getTitleAt(tPain.getSelectedIndex());
-	}
+	}/*
 	public static File getFileForFilename(String name)
 	{
 		for(File f : MaineWindow.getInstance().getOpenDocuments())
@@ -57,5 +51,5 @@ public class DocumentUtils
 				return f;
 		}
 		return null;
-	}
+	}*/
 }

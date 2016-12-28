@@ -2,18 +2,22 @@ package john.TextEditor.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import john.TextEditor.gui.event.MenuBarListener;
-import john.TextEditor.gui.event.TextDocumentListener;
-import john.TextEditor.objects.File;
-
-import org.fife.ui.rtextarea.*;
-import org.fife.ui.rsyntaxtextarea.*;
+import john.TextEditor.gui.event.TextDocumentListener2;
+import john.TextEditor.handlers.FileManager;
+import john.TextEditor.net.NetworkManager;
 
 public class MaineWindow 
 {
@@ -24,18 +28,22 @@ public class MaineWindow
 	JFrame frame;
 	RSyntaxTextArea textArea;
 	JTabbedPane tabbedPane;
+	
 	JMenuBar menuBar;
 	JMenu fileMenu;
+	
 	JMenuItem fileOpenMenuItem;
 	JMenuItem fileSaveMenuItem;
+	JMenuItem fileNewMenuItem;
 	
 	MenuBarListener menuBarListner;
-	TextDocumentListener docListener;
+	TextDocumentListener2 docListener;
 	
+	NetworkManager networkManager;
 	
-	ArrayList<File> openDocs;
-
-	public MaineWindow() throws Exception
+	//ArrayList<File> openDocs;
+	FileManager fileManager;
+	private MaineWindow() throws Exception
 	{
 	      maineWindow = this;
 		  
@@ -60,9 +68,9 @@ public class MaineWindow
 	      up.setBackground(Color.red);
 	      cp.add(up, BorderLayout.PAGE_START);
 	      
-	      openDocs = new ArrayList<>();
+	      //openDocs = new ArrayList<>();
 	      
-	      docListener = new TextDocumentListener();
+	      //docListener = new TextDocumentListener2();
 	      
 	      menuBarListner = new MenuBarListener();
 	      menuBar = new JMenuBar();
@@ -77,16 +85,16 @@ public class MaineWindow
 	      fileSaveMenuItem.addActionListener(menuBarListner);
 	      fileMenu.add(fileSaveMenuItem);
 	      
+	      fileNewMenuItem = new JMenuItem("New");
+	      fileNewMenuItem.addActionListener(menuBarListner);
+	      fileMenu.add(fileNewMenuItem);
 	      
-	      if(openDocs.isEmpty())
-	      {
-	    	  openDocs.add(new File(new java.io.File("Untitled.java")));//TODO extension from preferences/project
-	      } 
-	      for(File f : openDocs)
-		  {
-	    	  openFile(f);
-		  }
+	      networkManager = new NetworkManager();
 	      
+	      fileManager = new FileManager();
+	      
+	      if(fileManager.hasNoFiles())
+	    	  fileManager.openFile();
 	      
 	      frame.setJMenuBar(menuBar);
 	      frame.setContentPane(cp);
@@ -99,12 +107,12 @@ public class MaineWindow
 	private void p(String s)//because typing out System.out.println() takes too long
 	{
 		System.out.println(s);
-	}
+	}/*
 	public void openFile(File f)
 	{
 		tabbedPane.addTab(f.getFile().getName(), f.getScrollPane());
 		f.getTextArea().getDocument().addDocumentListener(docListener);
-	}
+	}*/
 	public static MaineWindow getInstance()
 	{
 		if(maineWindow == null)
@@ -121,12 +129,20 @@ public class MaineWindow
 	{
 		return frame;
 	}
-	public ArrayList<File> getOpenDocuments()
-	{
-		return openDocs;
-	}
 	public JTabbedPane getTabbedPane()
 	{
 		return tabbedPane;
+	}
+	public TextDocumentListener2 getDocumentListener()
+	{
+		return docListener;//TODO implement getDocumentListener()
+	}
+	public FileManager getFileManager()
+	{
+		return fileManager;
+	}
+	public NetworkManager getNetworkManager()
+	{
+		return networkManager;
 	}
 }

@@ -4,10 +4,9 @@ import javax.swing.event.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Segment;
 
-import john.TextEditor.gui.MaineWindow;
-import john.TextEditor.objects.File;
 import john.TextEditor.util.DocumentUtils;
-
+@Deprecated
+@SuppressWarnings("unused")
 public class TextDocumentListener implements DocumentListener
 {
 	@Override
@@ -36,7 +35,7 @@ public class TextDocumentListener implements DocumentListener
 			e.printStackTrace();
 		}
 		String change = seg.toString();
-		File f = DocumentUtils.whoseDocumentIsThis(event.getDocument());
+		//File f = DocumentUtils.whoseDocumentIsThis(event.getDocument());
 		//MaineWindow.getInstance().getClient().sendAddition(f, offset, length, change);//TODO when client finished
 	}
 

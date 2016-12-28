@@ -9,9 +9,7 @@ import javax.swing.JMenuItem;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import john.TextEditor.gui.MaineWindow;
-import john.TextEditor.io.FileWriter;
-import john.TextEditor.objects.File;
-import john.TextEditor.util.DocumentUtils;
+import john.TextEditor.objects.File2;
 
 public class MenuBarListener implements ActionListener
 {
@@ -29,16 +27,20 @@ public class MenuBarListener implements ActionListener
 				int returnVal = chooser.showOpenDialog(MaineWindow.getInstance().getJFrame());
 			    if(returnVal == JFileChooser.APPROVE_OPTION)
 			    {
-			    	MaineWindow.getInstance().openFile(new File(chooser.getSelectedFile()));
+			    	MaineWindow.getInstance().getFileManager().openFile(chooser.getSelectedFile());
 			    }
 				break;
 			case "Save":
-				File f = DocumentUtils.whoseScrollPaneIsThis(((RTextScrollPane)MaineWindow.getInstance().getTabbedPane().getSelectedComponent()));
-				boolean res = FileWriter.saveFile(f);
-				if(res)
-				{
-					//TODO remove the file edited indicator
-				}
+				File2 f = MaineWindow.getInstance().getFileManager().getFile((RTextScrollPane)MaineWindow.getInstance().getTabbedPane().getSelectedComponent());
+				if(f == null)
+					System.out.println("wat");
+				if(f.save())//if successfully saves
+					f.setEdited(false);
+				break;
+			case "New":
+				MaineWindow.getInstance().getFileManager().openFile();
+				break;
+			default:
 				break;
 			}
 		}
