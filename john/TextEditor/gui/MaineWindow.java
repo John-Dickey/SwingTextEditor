@@ -29,12 +29,7 @@ public class MaineWindow
 	RSyntaxTextArea textArea;
 	JTabbedPane tabbedPane;
 	
-	JMenuBar menuBar;
-	JMenu fileMenu;
-	
-	JMenuItem fileOpenMenuItem;
-	JMenuItem fileSaveMenuItem;
-	JMenuItem fileNewMenuItem;
+	MenuBarDeal menuBar;
 	
 	MenuBarListener menuBarListner;
 	TextDocumentListener2 docListener;
@@ -68,26 +63,7 @@ public class MaineWindow
 	      up.setBackground(Color.red);
 	      cp.add(up, BorderLayout.PAGE_START);
 	      
-	      //openDocs = new ArrayList<>();
-	      
-	      //docListener = new TextDocumentListener2();
-	      
-	      menuBarListner = new MenuBarListener();
-	      menuBar = new JMenuBar();
-	      fileMenu = new JMenu("File");
-	      menuBar.add(fileMenu);
-	      
-	      fileOpenMenuItem = new JMenuItem("Open");
-	      fileOpenMenuItem.addActionListener(menuBarListner);
-	      fileMenu.add(fileOpenMenuItem);
-	      
-	      fileSaveMenuItem = new JMenuItem("Save");
-	      fileSaveMenuItem.addActionListener(menuBarListner);
-	      fileMenu.add(fileSaveMenuItem);
-	      
-	      fileNewMenuItem = new JMenuItem("New");
-	      fileNewMenuItem.addActionListener(menuBarListner);
-	      fileMenu.add(fileNewMenuItem);
+	      menuBar = new MenuBarDeal();
 	      
 	      networkManager = new NetworkManager();
 	      

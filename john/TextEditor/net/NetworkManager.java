@@ -14,13 +14,22 @@ public class NetworkManager
 		server = null;
 		networkStuff = false;
 	}
-	public void startServer()
+	public void startServer(int port) throws Exception
 	{
-		
+		server = new Server(port);
 	}
-	public void startClient()
+	public void startServer() throws Exception
 	{
-		
+		startServer(7000);
+	}
+	public void startClient(String ip, int port)
+	{
+		client = new Client(ip, port, true);
+		networkStuff = true;
+	}
+	public void startClient(String ip)
+	{
+		startClient(ip, 7000);
 	}
 	public Client getClient()
 	{

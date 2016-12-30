@@ -56,25 +56,29 @@ public class FileManager
 			if(f.getGuiRep().getScrollPane().equals(pane))
 				return f;
 		}
-		throw new IllegalArgumentException("It didn't work");//TODO good exception desc
+		throw new IllegalArgumentException("Could not find");//TODO good exception desc
 	}
-	public File2 getFile(Document d)
+	public File2 getFile(Document d) throws IllegalArgumentException
 	{
 		for(File2 f : files)
 		{
 			if(f.getGuiRep().getTextArea().getDocument() == d)
 				return f;
 		}
-		return null;
+		throw new IllegalArgumentException("Could not find");
 	}
-	public File2 getFile(UID u)
+	public File2 getFile(UID u) throws IllegalArgumentException
 	{
 		for(File2 f: files)
 		{
 			if(f.getUid().equals(u))
 				return f;
 		}
-		return null;
+		throw new IllegalArgumentException("Could not find");
+	}
+	public File2 getSelectedFile()
+	{
+		return getFile((RTextScrollPane)MaineWindow.getInstance().getTabbedPane().getSelectedComponent());
 	}
 	public void p(String s)
 	{
@@ -85,8 +89,23 @@ public class FileManager
 		File2 file = getFile(a.getUid());
 		file.getGuiRep().getTextArea().getDocument().insertString(a.getOffset(), a.getChange(), null);
 	}
-	public void handleDeletion(Deletion d)
+	public void handleDeletion(Deletion d) throws BadLocationException
 	{
-		
+		File2 file = getFile(d.getUid());
+		file.getGuiRep().getTextArea().getDocument().remove(d.getOffset(), d.getLength());
+	}
+	public String[] getOpenFilenames()
+	{
+		String[] namesArray = new String[files.size()];
+		File2[] array = (File2[])files.toArray();
+		for(int x = 0; x < array.length; x++)
+		{
+			namesArray[x] = array[x].getName();
+		}
+		return namesArray;
+	}
+	public File2 getFileByArrayIndex(int index)
+	{
+		return files.get(index);
 	}
 }

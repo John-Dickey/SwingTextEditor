@@ -33,7 +33,11 @@ public class ClientListener implements SocketListener
 			}
 		} else if(object instanceof Deletion) {
 			Deletion d = (Deletion)object;
-			MaineWindow.getInstance().getFileManager().handleDeletion(d);
+			try {
+				MaineWindow.getInstance().getFileManager().handleDeletion(d);
+			} catch(BadLocationException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

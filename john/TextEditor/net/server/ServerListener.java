@@ -18,7 +18,7 @@ public class ServerListener implements SocketListener
 			File f = (File)object;
 			if(FileManager.getInstance().exists(f))
 				return;
-			FileManager.getInstance().addFile(f);//TODO acknowledge packet, have sub types for add file, addition, etc
+			FileManager.getInstance().addFile(f);
 			sendToAllExcept(f, con);
 		} else if(object instanceof Addition) {
 			Addition a = (Addition)object;
