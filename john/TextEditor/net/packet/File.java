@@ -3,7 +3,7 @@ package john.TextEditor.net.packet;
 import java.io.Serializable;
 import java.rmi.server.UID;
 
-public class File implements Serializable
+public class File implements Serializable, Packet
 {
 	String name, data;//TODO implement uid
 	UID uid;

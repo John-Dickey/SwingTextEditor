@@ -1,5 +1,7 @@
 package john.TextEditor.net.client;
 
+import john.TextEditor.net.packet.Packet;
+
 public class Client 
 {
 	com.jmr.wrapper.client.Client client;
@@ -10,9 +12,9 @@ public class Client
 		if(connect)
 			client.connect();
 	}
-	public void send(Object o)
+	public void send(Packet p)
 	{
-		client.getServerConnection().sendTcp(o);
+		client.getServerConnection().sendTcp(p);
 	}
 	public void connect()
 	{

@@ -97,7 +97,7 @@ public class FileManager
 	public String[] getOpenFilenames()
 	{
 		String[] namesArray = new String[files.size()];
-		File2[] array = (File2[])files.toArray();
+		File2[] array = files.toArray(new File2[files.size()]);
 		for(int x = 0; x < array.length; x++)
 		{
 			namesArray[x] = array[x].getName();

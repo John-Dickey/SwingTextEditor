@@ -5,7 +5,7 @@ import java.rmi.server.UID;
 
 import john.TextEditor.net.server.FileManager;
 
-public class Addition implements Serializable
+public class Addition implements Serializable, Packet
 {
 	UID uid;
 	String change;

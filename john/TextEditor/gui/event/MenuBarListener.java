@@ -15,7 +15,11 @@ import john.TextEditor.objects.File2;
 
 public class MenuBarListener implements ActionListener
 {
-
+	MaineWindow window;
+	public MenuBarListener() 
+	{
+		window = MaineWindow.getInstance();
+	}
 	@Override
 	public void actionPerformed(ActionEvent e)//i think we're on the edt 
 	{
@@ -26,45 +30,57 @@ public class MenuBarListener implements ActionListener
 			{
 			case "Open":
 				JFileChooser chooser = new JFileChooser();
-				int returnVal = chooser.showOpenDialog(MaineWindow.getInstance().getJFrame());
+				int returnVal = chooser.showOpenDialog(window.getJFrame());
 			    if(returnVal == JFileChooser.APPROVE_OPTION)
 			    {
-			    	MaineWindow.getInstance().getFileManager().openFile(chooser.getSelectedFile());
+			    	window.getFileManager().openFile(chooser.getSelectedFile());
 			    }
 				break;
 			case "Save":
-				File2 f = MaineWindow.getInstance().getFileManager().getSelectedFile();
+				File2 f = window.getFileManager().getSelectedFile();
 				if(f == null)
 					System.out.println("wat");
 				if(f.save())//if successfully saves
 					f.setEdited(false);
 				break;
 			case "New":
-				MaineWindow.getInstance().getFileManager().openFile();
+				window.getFileManager().openFile();
 				break;
 			case "Create Server":
-				int port = Integer.parseInt(JOptionPane.showInputDialog(MaineWindow.getInstance().getJFrame(), "Enter the port", "7000"));
+				int port = Integer.parseInt(JOptionPane.showInputDialog(window.getJFrame(), "Enter the port", "7000"));
 				try {
-					MaineWindow.getInstance().getNetworkManager().startServer(port);
+					window.getNetworkManager().startServer(port);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
 				break;
 			case "Create Client":
-				Scanner scan = new Scanner(JOptionPane.showInputDialog(MaineWindow.getInstance().getJFrame(), "Enter the ip and port in the format: [hostname]:[port]", "127.0.0.1:7000"));
+				Scanner scan = new Scanner(JOptionPane.showInputDialog(window.getJFrame(), "Enter the ip and port in the format: [hostname]:[port]", "127.0.0.1:7000"));
 				scan.useDelimiter(":");
 				String host = scan.next();
 				int port1 = scan.nextInt();
 				try {
-					MaineWindow.getInstance().getNetworkManager().startClient(host, port1);
+					window.getNetworkManager().startClient(host, port1);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
 				break;
 			case "Send File to Server":
-				String[] opts = MaineWindow.getInstance().getFileManager().getOpenFilenames();
-				String s = (String) JOptionPane.showInputDialog(MaineWindow.getInstance().getJFrame(), "Choose the File to send:", "Choose the File", JOptionPane.PLAIN_MESSAGE, null, opts, opts[0]); 
+				String[] opts = window.getFileManager().getOpenFilenames();
+				String s = (String) JOptionPane.showInputDialog(window.getJFrame(), "Choose the File to send:", "Choose the File", JOptionPane.PLAIN_MESSAGE, null, opts, opts[0]); 
 				//turn choice into array index then FileManager.getByArrayIndex(), then Client.send(file.toPacket())
+				int index = -1;
+				for(int x = 0; x < opts.length; x++)
+				{
+					if(s == opts[x])
+					{
+						index = x;
+					}
+				}
+				if(index == -1)
+					break;
+				File2 file = window.getFileManager().getFileByArrayIndex(index);
+				window.getNetworkManager().getClient().send(file.toPacket());
 				break;
 			default:
 				break;

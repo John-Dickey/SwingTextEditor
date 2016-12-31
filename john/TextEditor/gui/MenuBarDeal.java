@@ -80,7 +80,9 @@ public class MenuBarDeal extends JMenuBar
 		netClientStartMenuItem.addActionListener(menuBarListner);
 		networkMenu.add(netClientStartMenuItem);
 		
-		
+		netOpenFileMenuItem = new JMenuItem("Send File to Server");
+		netOpenFileMenuItem.addActionListener(menuBarListner);
+		networkMenu.add(netOpenFileMenuItem);
 	}
 	private static class MenuBarConstants
 	{
@@ -96,17 +98,17 @@ public class MenuBarDeal extends JMenuBar
 				SyntaxConstants.SYNTAX_STYLE_D,
 				SyntaxConstants.SYNTAX_STYLE_DART,
 				SyntaxConstants.SYNTAX_STYLE_DELPHI,
-				SyntaxConstants.SYNTAX_STYLE_DOCKERFILE,
+				//SyntaxConstants.SYNTAX_STYLE_DOCKERFILE,
 				SyntaxConstants.SYNTAX_STYLE_DTD,
 				SyntaxConstants.SYNTAX_STYLE_FORTRAN,
 				SyntaxConstants.SYNTAX_STYLE_GROOVY,
-				SyntaxConstants.SYNTAX_STYLE_HOSTS,
+				//SyntaxConstants.SYNTAX_STYLE_HOSTS,
 				SyntaxConstants.SYNTAX_STYLE_HTACCESS,
 				SyntaxConstants.SYNTAX_STYLE_HTML,
 				SyntaxConstants.SYNTAX_STYLE_JAVA,
 				SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT,
 				SyntaxConstants.SYNTAX_STYLE_JSON,
-				SyntaxConstants.SYNTAX_STYLE_JSON_WITH_COMMENTS,
+				//SyntaxConstants.SYNTAX_STYLE_JSON_WITH_COMMENTS,
 				SyntaxConstants.SYNTAX_STYLE_JSP,
 				SyntaxConstants.SYNTAX_STYLE_LATEX,
 				SyntaxConstants.SYNTAX_STYLE_LESS,
@@ -125,7 +127,7 @@ public class MenuBarDeal extends JMenuBar
 				SyntaxConstants.SYNTAX_STYLE_SCALA,
 				SyntaxConstants.SYNTAX_STYLE_SQL,
 				SyntaxConstants.SYNTAX_STYLE_TCL,
-				SyntaxConstants.SYNTAX_STYLE_TYPESCRIPT,
+				//SyntaxConstants.SYNTAX_STYLE_TYPESCRIPT,
 				SyntaxConstants.SYNTAX_STYLE_UNIX_SHELL,
 				SyntaxConstants.SYNTAX_STYLE_VISUAL_BASIC,
 				SyntaxConstants.SYNTAX_STYLE_WINDOWS_BATCH,

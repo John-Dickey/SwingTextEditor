@@ -5,7 +5,7 @@ import java.rmi.server.UID;
 
 import john.TextEditor.net.server.FileManager;
 
-public class Deletion implements Serializable
+public class Deletion implements Serializable, Packet
 {
 	UID uid;
 	int offset;
