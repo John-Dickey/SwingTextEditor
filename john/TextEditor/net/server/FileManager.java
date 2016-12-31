@@ -35,8 +35,9 @@ public class FileManager {
 		{
 			if(f.getUid().equals(u))
 				return f;
+			p(u.toString() + ":" + f.getUid().toString());
 		}
-		return null;
+		throw new IllegalArgumentException("Could not find");
 	}
 	public boolean exists(File fil)
 	{
@@ -46,5 +47,9 @@ public class FileManager {
 				return true;
 		}
 		return false;
+	}
+	private void p(String s)
+	{
+		System.out.println(s);
 	}
 }

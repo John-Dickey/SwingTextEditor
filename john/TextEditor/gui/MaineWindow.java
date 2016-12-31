@@ -36,6 +36,8 @@ public class MaineWindow
 	
 	NetworkManager networkManager;
 	
+	LogPanel logger;
+	
 	//ArrayList<File> openDocs;
 	FileManager fileManager;
 	private MaineWindow() throws Exception
@@ -68,6 +70,8 @@ public class MaineWindow
 	      networkManager = new NetworkManager();
 	      
 	      fileManager = new FileManager();
+	      
+	      //logger = new LogPanel();
 	      
 	      if(fileManager.hasNoFiles())
 	    	  fileManager.openFile();
@@ -120,5 +124,9 @@ public class MaineWindow
 	public NetworkManager getNetworkManager()
 	{
 		return networkManager;
+	}
+	public LogPanel getLogger()
+	{
+		return logger;
 	}
 }

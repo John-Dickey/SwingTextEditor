@@ -7,10 +7,11 @@ public class File implements Serializable, Packet
 {
 	String name, data;//TODO implement uid
 	UID uid;
-	public File(String name, String data)
+	public File(String name, String data, UID uid)
 	{
 		this.name = name;
 		this.data = data;
+		this.uid = uid;
 	}
 	public boolean equals(File f)//if two files are the same name, but are different files, will still return true
 	{

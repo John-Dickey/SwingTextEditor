@@ -13,6 +13,7 @@ import john.TextEditor.gui.MaineWindow;
 import john.TextEditor.gui.event.TextDocumentListener2;
 import john.TextEditor.net.packet.Addition;
 import john.TextEditor.net.packet.Deletion;
+import john.TextEditor.net.packet.LogEnrty;
 import john.TextEditor.objects.File2;
 import john.TextEditor.objects.FileAsGui;
 
@@ -28,7 +29,11 @@ public class FileManager
 	public void openFile(File2 file)
 	{
 		file.setGuiRep(new FileAsGui(file));
-		file.getGuiRep().getTextArea().getDocument().addDocumentListener(new TextDocumentListener2(file));
+		
+		TextDocumentListener2 docListener = new TextDocumentListener2(file);
+		file.getGuiRep().getTextArea().getDocument().addDocumentListener(docListener);
+		file.setDocListener(docListener);
+		
 		tabs.addTab(file.getName(), file.getGuiRep().getScrollPane());
 		files.add(file);
 	}
@@ -42,7 +47,7 @@ public class FileManager
 	}
 	public void openFile(john.TextEditor.net.packet.File f)
 	{
-		openFile(new File2(f.getData(), f.getName()));
+		openFile(new File2(f));
 	}
 	public boolean hasNoFiles()
 	{
@@ -71,6 +76,7 @@ public class FileManager
 	{
 		for(File2 f: files)
 		{
+			MaineWindow.getInstance().getNetworkManager().getClient().send(new LogEnrty(u.toString() + ":" + f.getUid().toString()));
 			if(f.getUid().equals(u))
 				return f;
 		}
@@ -87,6 +93,7 @@ public class FileManager
 	public void handleAddition(Addition a) throws BadLocationException
 	{
 		File2 file = getFile(a.getUid());
+		file.getDocListener().chillOneSecA(a);
 		file.getGuiRep().getTextArea().getDocument().insertString(a.getOffset(), a.getChange(), null);
 	}
 	public void handleDeletion(Deletion d) throws BadLocationException

@@ -6,6 +6,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import john.TextEditor.gui.MaineWindow;
+import john.TextEditor.gui.event.TextDocumentListener2;
 import john.TextEditor.io.FileReader;
 import john.TextEditor.io.FileWriter;
 import john.TextEditor.net.packet.File;
@@ -19,11 +20,17 @@ public class File2
 	java.io.File actualFile;
 	boolean askForOverwrite;
 	boolean edited;
-	public File2(String text, String name, java.io.File fileIfApplicable)
+	TextDocumentListener2 docListener;
+	/*
+	 * Constructors
+	 */
+	public File2(String text, String name, java.io.File fileIfApplicable, UID u)
 	{
 		this.text = text;
 		this.name = name;
-		uid = new UID();
+		uid = (u != null ? u : new UID());
+		//uid = new UID();//TODO change this to have a uid arguement, check if is null, then if so it makes new one
+		//MaineWindow.getInstance().getLogger().log("creating a new uuid: {" + uid.toString() + "} for file with name: " + name);
 		guiRep = null;
 		actualFile = fileIfApplicable;
 		askForOverwrite = true;
@@ -31,16 +38,28 @@ public class File2
 	}
 	public File2(java.io.File f)
 	{
-		this(FileReader.constructString(f), f.getName(), f);
+		this(FileReader.constructString(f), f.getName(), f, null);
 	}
 	public File2(String text, String name)
 	{
-		this(text, name, null);
+		this(text, name, null, null);
+	}
+	public File2(String text, String name, UID u)
+	{
+		this(text, name, null, u);
 	}
 	public File2()
 	{
 		this("", "Untitled.txt");
 	}
+	public File2(john.TextEditor.net.packet.File f)
+	{
+		this(f.getData(), f.getName(), f.getUid());
+		//setUid(f.getUid());
+	}
+	/*
+	 * Methods
+	 */
 	public void setGuiRep(FileAsGui g)
 	{
 		guiRep = g;
@@ -55,7 +74,7 @@ public class File2
 	}
 	public john.TextEditor.net.packet.File toPacket()
 	{
-		return new File(name, text);
+		return new File(name, text, uid);
 	}
 	public boolean save()
 	{
@@ -130,5 +149,17 @@ public class File2
 	public String getText()
 	{
 		return text;
+	}
+	public void setUid(UID u)
+	{
+		uid = u;
+	}
+	public void setDocListener(TextDocumentListener2 t)
+	{
+		docListener = t;
+	}
+	public TextDocumentListener2 getDocListener() 
+	{
+		return docListener;
 	}
 }

@@ -1,11 +1,14 @@
 package john.TextEditor.net.server;
 
+import java.util.ArrayList;
+
 import com.jmr.wrapper.common.Connection;
 import com.jmr.wrapper.common.listener.SocketListener;
 
 import john.TextEditor.net.packet.Addition;
 import john.TextEditor.net.packet.Deletion;
 import john.TextEditor.net.packet.File;
+import john.TextEditor.net.packet.LogEnrty;
 
 public class ServerListener implements SocketListener
 {
@@ -34,6 +37,9 @@ public class ServerListener implements SocketListener
 				return;
 			d.processDeletion();
 			sendToAllExcept(d, con);
+		} else if(object instanceof LogEnrty) {
+			LogEnrty l = (LogEnrty) object;
+			System.out.println(l.getMsg());
 		}
 	}
 
@@ -41,6 +47,11 @@ public class ServerListener implements SocketListener
 	public void connected(Connection con) 
 	{
 		ConnectionManager.getInstance().addConnection(con);
+		ArrayList<File> files = FileManager.getInstance().getFiles();
+		for(File f : files)
+		{
+			con.sendTcp(f);
+		}
 	}
 
 	@Override

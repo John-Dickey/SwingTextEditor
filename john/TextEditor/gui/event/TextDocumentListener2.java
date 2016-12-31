@@ -7,6 +7,7 @@ import javax.swing.text.BadLocationException;
 import john.TextEditor.gui.MaineWindow;
 import john.TextEditor.net.NetworkManager;
 import john.TextEditor.net.packet.Addition;
+import john.TextEditor.net.packet.Deletion;
 import john.TextEditor.objects.File2;
 
 public class TextDocumentListener2 implements DocumentListener
@@ -14,13 +15,15 @@ public class TextDocumentListener2 implements DocumentListener
 	File2 file;
 	NetworkManager netMan;
 	boolean notNetwork;
-	Addition chillHolder;
+	Addition chillHolderA;
+	Deletion chillHolderD;
 	public TextDocumentListener2(File2 fil) 
 	{
 		file = fil;
 		netMan = MaineWindow.getInstance().getNetworkManager();
 		notNetwork = false;
-		chillHolder = null;
+		chillHolderA = null;
+		chillHolderD = null;
 	}
 	@Override
 	public void changedUpdate(DocumentEvent event) 
@@ -39,9 +42,12 @@ public class TextDocumentListener2 implements DocumentListener
 	{
 		try {
 			Addition a = new Addition(file.getUid(), event.getDocument().getText(event.getOffset(), event.getLength()), event.getOffset());
-			if(a.equals(chillHolder)){
-				a = null;
-				return;
+			if(chillHolderA != null)
+			{
+				if(a.getChange().equals(chillHolderA.getChange()) && a.getOffset() == chillHolderA.getOffset()){
+					chillHolderA = null;
+					return;
+				}
 			}
 			if(netMan.shouldDo())
 			{
@@ -55,14 +61,26 @@ public class TextDocumentListener2 implements DocumentListener
 	@Override
 	public void removeUpdate(DocumentEvent event) 
 	{
-		
+		Deletion d = new Deletion(file.getUid(), event.getOffset(), event.getLength());
+		if(d.equals(chillHolderD)){
+			chillHolderD = null;
+			return;
+		}
+		if(netMan.shouldDo())
+		{
+			netMan.getClient().send(d);
+		}
 	}
 	public void p(String s)
 	{
 		System.out.println(s);
 	}
-	public void chillOneSec(Addition ad)
+	public void chillOneSecA(Addition ad)
 	{
-		chillHolder = ad;
+		chillHolderA = ad;
+	}
+	public void chillOneSecD(Deletion del)
+	{
+		chillHolderD = del;
 	}
 }
