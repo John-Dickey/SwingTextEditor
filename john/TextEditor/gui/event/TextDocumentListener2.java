@@ -28,7 +28,6 @@ public class TextDocumentListener2 implements DocumentListener
 	@Override
 	public void changedUpdate(DocumentEvent event) 
 	{//TODO if "lag" becomes an issue, do this every like 10 times, or something
-		p("10");
 		if(!file.edited())
 			file.setEdited(true);
 		try {

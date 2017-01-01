@@ -18,6 +18,9 @@ public class FileAsGui
 	{
 		file = f;
 		textArea = new RSyntaxTextArea(f.text);
+		textArea.setClearWhitespaceLinesEnabled(false);
+		textArea.setCloseCurlyBraces(false);
+		textArea.setCloseMarkupTags(false);
 		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 		scrollPane = new RTextScrollPane(textArea);
 	}
