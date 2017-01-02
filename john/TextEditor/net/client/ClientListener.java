@@ -42,15 +42,9 @@ public class ClientListener implements SocketListener
 	}
 
 	@Override
-	public void connected(Connection con) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void connected(Connection con) {}
 
 	@Override
-	public void disconnected(Connection con) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void disconnected(Connection con) {}
 
 }

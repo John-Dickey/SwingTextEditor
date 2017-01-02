@@ -87,12 +87,7 @@ public class MaineWindow
 	private void p(String s)//because typing out System.out.println() takes too long
 	{
 		System.out.println(s);
-	}/*
-	public void openFile(File f)
-	{
-		tabbedPane.addTab(f.getFile().getName(), f.getScrollPane());
-		f.getTextArea().getDocument().addDocumentListener(docListener);
-	}*/
+	}
 	public static MaineWindow getInstance()
 	{
 		if(maineWindow == null)

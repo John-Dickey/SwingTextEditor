@@ -21,6 +21,7 @@ public class FileAsGui
 		textArea.setClearWhitespaceLinesEnabled(false);
 		textArea.setCloseCurlyBraces(false);
 		textArea.setCloseMarkupTags(false);
+		textArea.setAutoIndentEnabled(false);
 		textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 		scrollPane = new RTextScrollPane(textArea);
 	}

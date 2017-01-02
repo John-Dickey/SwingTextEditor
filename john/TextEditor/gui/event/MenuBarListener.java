@@ -21,7 +21,7 @@ public class MenuBarListener implements ActionListener
 		window = MaineWindow.getInstance();
 	}
 	@Override
-	public void actionPerformed(ActionEvent e)//i think we're on the edt 
+	public void actionPerformed(ActionEvent e)
 	{
 		if(e.getSource() instanceof JMenuItem)
 		{

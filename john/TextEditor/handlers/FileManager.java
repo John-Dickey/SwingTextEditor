@@ -76,7 +76,7 @@ public class FileManager
 	{
 		for(File2 f: files)
 		{
-			MaineWindow.getInstance().getNetworkManager().getClient().send(new LogEnrty(u.toString() + ":" + f.getUid().toString()));
+			//MaineWindow.getInstance().getNetworkManager().getClient().send(new LogEnrty(u.toString() + ":" + f.getUid().toString()));
 			if(f.getUid().equals(u))
 				return f;
 		}
@@ -99,6 +99,7 @@ public class FileManager
 	public void handleDeletion(Deletion d) throws BadLocationException
 	{
 		File2 file = getFile(d.getUid());
+		file.getDocListener().chillOneSecD(d);
 		file.getGuiRep().getTextArea().getDocument().remove(d.getOffset(), d.getLength());
 	}
 	public String[] getOpenFilenames()

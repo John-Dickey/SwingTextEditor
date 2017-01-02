@@ -29,7 +29,7 @@ public class Deletion implements Serializable, Packet
 	{
 		File f = FileManager.getInstance().getFile(uid);
 		StringBuilder sb = new StringBuilder(f.getData());
-		sb.delete(offset, offset+length);
+		sb.delete(offset, offset+length-1);
 		f.setData(sb.toString());
 	}
 }

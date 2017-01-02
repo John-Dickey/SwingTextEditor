@@ -1,13 +1,18 @@
 package john.TextEditor.gui.event;
 
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+
+import org.apache.commons.lang3.StringUtils;
 
 import john.TextEditor.gui.MaineWindow;
 import john.TextEditor.net.NetworkManager;
 import john.TextEditor.net.packet.Addition;
 import john.TextEditor.net.packet.Deletion;
+import john.TextEditor.net.packet.LogEnrty;
 import john.TextEditor.objects.File2;
 
 public class TextDocumentListener2 implements DocumentListener
@@ -40,7 +45,10 @@ public class TextDocumentListener2 implements DocumentListener
 	public void insertUpdate(DocumentEvent event) 
 	{
 		try {
-			Addition a = new Addition(file.getUid(), event.getDocument().getText(event.getOffset(), event.getLength()), event.getOffset());
+			//String change = event.getDocument().getText(event.getOffset(), event.getLength());
+			String doc = event.getDocument().getText(0, event.getDocument().getLength());
+			String change = doc.substring(event.getOffset(), event.getOffset() + event.getLength());
+			Addition a = new Addition(file.getUid(), change, event.getOffset());
 			if(chillHolderA != null)
 			{
 				if(a.getChange().equals(chillHolderA.getChange()) && a.getOffset() == chillHolderA.getOffset()){
@@ -50,6 +58,7 @@ public class TextDocumentListener2 implements DocumentListener
 			}
 			if(netMan.shouldDo())
 			{
+				//netMan.getClient().send(new LogEnrty("[" + doc.charAt(event.getOffset() - 2) + "]" + "[" + doc.charAt(event.getOffset() - 1) + "]" + "[" + change + "]" + "[" + doc.charAt(event.getOffset() + 1) + "]" + "[" + doc.charAt(event.getOffset() + 2) + "]"));
 				netMan.getClient().send(a);
 			}
 		} catch(BadLocationException e){
@@ -61,9 +70,13 @@ public class TextDocumentListener2 implements DocumentListener
 	public void removeUpdate(DocumentEvent event) 
 	{
 		Deletion d = new Deletion(file.getUid(), event.getOffset(), event.getLength());
-		if(d.equals(chillHolderD)){
-			chillHolderD = null;
-			return;
+		if(chillHolderD != null)
+		{
+			if(d.getLength() == chillHolderD.getLength() && d.getOffset() == chillHolderD.getOffset())
+			{
+				chillHolderD = null;
+				return;
+			}
 		}
 		if(netMan.shouldDo())
 		{
