@@ -1,12 +1,12 @@
 package john.TextEditor.gui.event;
 
+import java.awt.Robot;
+
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-
-import org.apache.commons.lang3.StringUtils;
 
 import john.TextEditor.gui.MaineWindow;
 import john.TextEditor.net.NetworkManager;
@@ -14,6 +14,10 @@ import john.TextEditor.net.packet.Addition;
 import john.TextEditor.net.packet.Deletion;
 import john.TextEditor.net.packet.LogEnrty;
 import john.TextEditor.objects.File2;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.sun.glass.events.KeyEvent;
 
 public class TextDocumentListener2 implements DocumentListener
 {
@@ -42,12 +46,25 @@ public class TextDocumentListener2 implements DocumentListener
 		}
 	}
 	@Override
-	public void insertUpdate(DocumentEvent event) 
+	public void insertUpdate(DocumentEvent event)//TODO make a sync button, which basically says im right, replace everyone's versions with my version (here because why not)
 	{
 		try {
-			//String change = event.getDocument().getText(event.getOffset(), event.getLength());
 			String doc = event.getDocument().getText(0, event.getDocument().getLength());
 			String change = doc.substring(event.getOffset(), event.getOffset() + event.getLength());
+			if(change.equals("\n"))
+			{
+				if(netMan.shouldDo())
+				{
+					netMan.getClient().send(new LogEnrty("\\n"));
+				}
+				int beginIndexOfPrev = doc.lastIndexOf('\n', event.getOffset()-1);
+				if(beginIndexOfPrev != -1)
+				{
+					String prevLine = doc.substring(beginIndexOfPrev, event.getOffset() -1);
+					int countOfTabs = StringUtils.countMatches(prevLine, '\t');
+					SwingUtilities.invokeLater(new Dealio(countOfTabs, event.getDocument(), event.getOffset() + 1));
+				}
+			}
 			Addition a = new Addition(file.getUid(), change, event.getOffset());
 			if(chillHolderA != null)
 			{
@@ -58,7 +75,6 @@ public class TextDocumentListener2 implements DocumentListener
 			}
 			if(netMan.shouldDo())
 			{
-				//netMan.getClient().send(new LogEnrty("[" + doc.charAt(event.getOffset() - 2) + "]" + "[" + doc.charAt(event.getOffset() - 1) + "]" + "[" + change + "]" + "[" + doc.charAt(event.getOffset() + 1) + "]" + "[" + doc.charAt(event.getOffset() + 2) + "]"));
 				netMan.getClient().send(a);
 			}
 		} catch(BadLocationException e){
@@ -94,5 +110,35 @@ public class TextDocumentListener2 implements DocumentListener
 	public void chillOneSecD(Deletion del)
 	{
 		chillHolderD = del;
+	}
+	private class Dealio implements Runnable//TODO name "Dealio"
+	{
+		int number;
+		Document document;
+		int off;
+		public Dealio(int num, Document doc, int offset)
+		{
+			number = num;
+			document = doc;
+			off = offset;
+		}
+		public void run()
+		{
+			String holder = "";
+			for(int x = 0; x < Math.ceil((double)number); x++)
+			{
+				holder += "\t";
+			}
+			try {
+				document.insertString(off, holder, null);
+				//file.getGuiRep().getTextArea().setCaretPosition(file.getGuiRep().getTextArea().getCaretPosition() + 1);//off + holder.length() + 1 // \_('~')_/ it doesnt work
+				new Robot().keyPress(KeyEvent.VK_RIGHT);
+				Thread.sleep(100);
+				new Robot().keyRelease(KeyEvent.VK_RIGHT);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
 	}
 }

@@ -29,8 +29,6 @@ public class File2
 		this.text = text;
 		this.name = name;
 		uid = (u != null ? u : new UID());
-		//uid = new UID();//TODO change this to have a uid arguement, check if is null, then if so it makes new one
-		//MaineWindow.getInstance().getLogger().log("creating a new uuid: {" + uid.toString() + "} for file with name: " + name);
 		guiRep = null;
 		actualFile = fileIfApplicable;
 		askForOverwrite = true;
